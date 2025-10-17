@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Championnat de Ping Pong</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --accent: #ff5722;
+      --accent-contrast: #fff;
+      --bg: #f3f4f6;
+      --surface: #ffffff;
+      --surface-dark: #1f2933;
+      --border: rgba(0,0,0,0.1);
+      --radius: 12px;
+      --shadow: 0 14px 30px rgba(15, 23, 42, 0.15);
+      font-family: "Inter", "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(231, 241, 255, 0.85));
+      min-height: 100vh;
+      color: #101828;
+    }
+
+    header {
+      background: radial-gradient(circle at top left, rgba(255, 87, 34, 0.7), transparent 60%),
+        linear-gradient(135deg, #1d4ed8, #9333ea);
+      color: white;
+      padding: 64px 20px 48px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: var(--shadow);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3rem);
+    }
+
+    header p {
+      max-width: 650px;
+      margin: 12px auto 0;
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    .wrapper {
+      margin: -40px auto 80px;
+      padding: 0 24px 48px;
+      max-width: 1200px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      border-radius: var(--radius);
+      margin-bottom: 32px;
+      padding: 28px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 1.6rem;
+      color: #1d4ed8;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    h2 .emoji {
+      font-size: 1.6rem;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin: 16px 0 6px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="datetime-local"],
+    input[type="date"],
+    input[type="email"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(15, 23, 42, 0.1);
+      background: rgba(255, 255, 255, 0.85);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: rgba(29, 78, 216, 0.6);
+      box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.18);
+      outline: none;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 12px 20px;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--accent), #ff784e);
+      color: var(--accent-contrast);
+      box-shadow: 0 12px 24px rgba(255, 87, 34, 0.28);
+      transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.05);
+      box-shadow: 0 18px 30px rgba(255, 87, 34, 0.35);
+    }
+
+    button.secondary {
+      background: transparent;
+      color: #1d4ed8;
+      border: 1px solid rgba(29, 78, 216, 0.3);
+      box-shadow: none;
+      padding: 10px 18px;
+    }
+
+    button.secondary:hover {
+      background: rgba(29, 78, 216, 0.08);
+    }
+
+    .grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    @media (min-width: 900px) {
+      .grid.two {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.07);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .list {
+      list-style: none;
+      padding: 0;
+      margin: 12px 0 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: rgba(244, 246, 255, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+
+    .list li span {
+      font-weight: 600;
+    }
+
+    .tag {
+      font-size: 0.75rem;
+      border-radius: 999px;
+      padding: 4px 10px;
+      background: rgba(29, 78, 216, 0.15);
+      color: #1d4ed8;
+      font-weight: 600;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
+      background: rgba(255, 255, 255, 0.94);
+    }
+
+    th, td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+      text-align: left;
+    }
+
+    th {
+      background: rgba(29, 78, 216, 0.08);
+      font-size: 0.92rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .status-pill[data-status="planifie"] {
+      background: rgba(59, 130, 246, 0.15);
+      color: #1d4ed8;
+    }
+
+    .status-pill[data-status="en-attente"] {
+      background: rgba(245, 158, 11, 0.18);
+      color: #b45309;
+    }
+
+    .status-pill[data-status="verrouille"] {
+      background: rgba(22, 163, 74, 0.18);
+      color: #047857;
+    }
+
+    .status-pill[data-status="litige"] {
+      background: rgba(239, 68, 68, 0.18);
+      color: #b91c1c;
+    }
+
+    dialog {
+      border: none;
+      border-radius: 18px;
+      padding: 0;
+      max-width: 420px;
+      width: min(420px, 95vw);
+      box-shadow: 0 25px 60px rgba(15, 23, 42, 0.35);
+      overflow: hidden;
+    }
+
+    dialog::backdrop {
+      background: rgba(15, 23, 42, 0.35);
+      backdrop-filter: blur(3px);
+    }
+
+    dialog form {
+      padding: 28px;
+      display: grid;
+      gap: 16px;
+    }
+
+    dialog header {
+      background: linear-gradient(135deg, #1d4ed8, #9333ea);
+      padding: 22px 24px;
+      color: white;
+      position: relative;
+    }
+
+    dialog header h3 {
+      margin: 0;
+      font-size: 1.3rem;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      padding: 0 28px 28px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(15, 23, 42, 0.08);
+      border-radius: 999px;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .chip button {
+      padding: 0;
+      border: none;
+      background: transparent;
+      color: inherit;
+      font-weight: 700;
+      box-shadow: none;
+      cursor: pointer;
+    }
+
+    .badge {
+      background: rgba(148, 163, 184, 0.18);
+      color: #475569;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .flex {
+      display: flex;
+      gap: 12px;
+    }
+
+    .flex.wrap {
+      flex-wrap: wrap;
+    }
+
+    .flex.center {
+      align-items: center;
+    }
+
+    .flex.space {
+      justify-content: space-between;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 24px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px dashed rgba(148, 163, 184, 0.35);
+      border-radius: 16px;
+    }
+
+    .empty-state p {
+      margin: 8px 0 0;
+      color: #475569;
+    }
+
+    .bubble {
+      background: rgba(14, 165, 233, 0.12);
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      color: #0369a1;
+      margin-top: 16px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 16px;
+    }
+
+    .toolbar button {
+      padding: 10px 18px;
+      font-size: 0.95rem;
+    }
+
+    .subtitle {
+      color: #475569;
+      font-size: 0.95rem;
+      margin-top: 6px;
+    }
+
+    .text-muted {
+      color: #6b7280;
+      font-size: 0.85rem;
+    }
+
+    .highlight {
+      background: rgba(254, 226, 226, 0.8);
+      padding: 12px 16px;
+      border-radius: 12px;
+      margin-top: 12px;
+      font-size: 0.95rem;
+      color: #991b1b;
+      border: 1px solid rgba(248, 113, 113, 0.3);
+    }
+
+    .success {
+      background: rgba(187, 247, 208, 0.8);
+      color: #047857;
+      border-color: rgba(22, 163, 74, 0.25);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 12px;
+      margin: 16px 0 0;
+    }
+
+    .tabs button {
+      background: rgba(148, 163, 184, 0.15);
+      color: #475569;
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-weight: 600;
+      box-shadow: none;
+    }
+
+    .tabs button.active {
+      background: rgba(29, 78, 216, 0.15);
+      color: #1d4ed8;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(148, 163, 184, 0.4);
+      transition: .4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 4px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+    }
+
+    input:checked + .slider {
+      background-color: rgba(59, 130, 246, 0.7);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+
+    .small {
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    .code {
+      font-family: "Fira Code", "SFMono-Regular", Menlo, monospace;
+      font-weight: 600;
+    }
+
+    .pill-group {
+      display: inline-flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pill-group span {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(29, 78, 216, 0.12);
+      color: #1d4ed8;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Organisez votre Championnat de Ping Pong</h1>
+    <p>
+      Configurez rapidement un tournoi interne sans outils externes ni inscription complexe. Les participants
+      déclarent leurs résultats, un code de validation évite les tricheries et un administrateur peut verrouiller
+      ou corriger si besoin.
+    </p>
+  </header>
+
+  <main class="wrapper">
+    <section class="card" id="setup">
+      <h2><span class="emoji">⚙️</span> Paramètres du tournoi</h2>
+      <div class="grid two">
+        <div>
+          <label for="tournament-name">Nom du championnat</label>
+          <input type="text" id="tournament-name" placeholder="Championnat Ping Pong Q3" />
+
+          <label for="tournament-mode">Format</label>
+          <select id="tournament-mode">
+            <option value="singles">Simple (un contre un)</option>
+            <option value="doubles">Double (équipes de deux)</option>
+          </select>
+
+          <label for="points">Règles &amp; Points</label>
+          <textarea id="points" placeholder="Ex : Matchs en 3 sets gagnants de 11 points, 2 points d'écart"></textarea>
+        </div>
+        <div>
+          <label for="start-date">Date de lancement</label>
+          <input type="date" id="start-date" />
+
+          <label for="reminder-days">Rappels email</label>
+          <input type="number" id="reminder-days" min="0" placeholder="3" />
+          <p class="small">Nombre de jours avant chaque match pour déclencher un rappel (export CSV ou mailto).</p>
+
+          <label for="admin-pin">Code admin (optionnel)</label>
+          <input type="text" id="admin-pin" placeholder="Définissez un PIN pour verrouiller/déverrouiller" />
+        </div>
+      </div>
+
+      <div class="bubble">
+        <strong>Astuce :</strong> Exportez la configuration en JSON pour l'archiver ou l'envoyer à un collègue. Les
+        données sont aussi conservées automatiquement dans ce navigateur (localStorage).
+      </div>
+
+      <div class="toolbar">
+        <button id="save-settings">💾 Sauvegarder</button>
+        <button class="secondary" id="export-config">📦 Export JSON</button>
+        <button class="secondary" id="import-config">📥 Importer</button>
+      </div>
+      <input type="file" id="import-input" accept="application/json" hidden>
+    </section>
+
+    <section class="card" id="participants">
+      <h2><span class="emoji">🧑‍🤝‍🧑</span> Participants &amp; équipes</h2>
+      <div class="grid two">
+        <div>
+          <label for="participant-input">Ajouter des participants</label>
+          <textarea id="participant-input" placeholder="Collez ou saisissez un nom par ligne"></textarea>
+          <div class="toolbar">
+            <button id="add-participants">➕ Ajouter</button>
+            <button class="secondary" id="clear-participants">🧹 Vider</button>
+          </div>
+        </div>
+        <div>
+          <div class="flex space center">
+            <h3 style="margin: 0;">Liste des inscrits</h3>
+            <span class="badge" id="participant-count">0 inscrit</span>
+          </div>
+          <ul class="list" id="participant-list"></ul>
+        </div>
+      </div>
+
+      <div id="teams-section" style="display:none; margin-top:24px;">
+        <h3>Équipes pour les doubles</h3>
+        <p class="subtitle">Glissez-déposez les noms pour former des paires. Chaque participant ne peut figurer que dans une seule équipe.</p>
+        <div class="grid two">
+          <div>
+            <label for="team-name">Nom d'équipe</label>
+            <input type="text" id="team-name" placeholder="Les Smashers" />
+            <label for="team-members">Membres</label>
+            <select id="team-members" multiple size="6"></select>
+            <button id="create-team">👥 Créer l'équipe</button>
+          </div>
+          <div>
+            <div class="flex space center">
+              <h3 style="margin: 0;">Équipes</h3>
+              <span class="badge" id="team-count">0 équipe</span>
+            </div>
+            <ul class="list" id="team-list"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="scheduling">
+      <h2><span class="emoji">📅</span> Planification des matchs</h2>
+      <div class="grid two">
+        <div>
+          <label for="match-location">Lieu par défaut</label>
+          <input type="text" id="match-location" placeholder="Salle de détente, étage 3" />
+
+          <label for="match-duration">Durée estimée (minutes)</label>
+          <input type="number" id="match-duration" min="5" step="5" value="30" />
+
+          <label for="round-robin-toggle">Générer une poule générale ?</label>
+          <div class="flex center">
+            <label class="switch">
+              <input type="checkbox" id="round-robin-toggle" checked>
+              <span class="slider"></span>
+            </label>
+            <span class="small">Si désactivé, créez vos matchs manuellement.</span>
+          </div>
+        </div>
+        <div>
+          <label for="start-datetime">Premier créneau</label>
+          <input type="datetime-local" id="start-datetime" />
+
+          <label for="match-interval">Intervalle entre matchs (minutes)</label>
+          <input type="number" id="match-interval" min="5" step="5" value="40" />
+
+          <label for="reminder-email">Email organisateur (pour rappels)</label>
+          <input type="email" id="reminder-email" placeholder="pingpong@entreprise.fr" />
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <button id="generate-matches">🏓 Générer les matchs</button>
+        <button class="secondary" id="add-manual-match">✍️ Créer un match manuel</button>
+        <button class="secondary" id="clear-matches">🗑️ Supprimer les matchs</button>
+      </div>
+
+      <div class="bubble">
+        Exportez vos créneaux au format CSV pour importer dans Outlook/Google Calendar ou générer vos propres emails. Chaque match reçoit un code de validation unique à partager avec les deux joueurs pour confirmer le résultat.
+      </div>
+
+      <div class="toolbar" style="justify-content:flex-start;">
+        <button class="secondary" id="export-csv">📤 Export CSV</button>
+      </div>
+
+      <div id="matches-container" class="card" style="margin-top:28px; background: rgba(248, 250, 252, 0.9);"></div>
+    </section>
+
+    <section class="card" id="reminders">
+      <h2><span class="emoji">📧</span> Rappels &amp; communications</h2>
+      <p>Utilisez le modèle ci-dessous pour envoyer un rappel rapide. Les variables seront remplacées automatiquement pour chaque match.</p>
+      <label for="email-template">Modèle d'email</label>
+      <textarea id="email-template" rows="6">Bonjour {{playerA}} et {{playerB}},\n\nVotre match de ping pong est prévu le {{date}} à {{time}} ({{location}}).\nRègles : {{rules}}\nCode de validation : {{code}}\n\nMerci de saisir le résultat dès le match terminé.\n\nSportivement,\n{{organizer}}</textarea>
+      <div class="toolbar">
+        <button class="secondary" id="preview-email">👀 Prévisualiser</button>
+      </div>
+      <div id="email-preview" class="bubble" style="display:none;"></div>
+    </section>
+  </main>
+
+  <dialog id="result-dialog">
+    <header>
+      <h3>Reporter un résultat</h3>
+    </header>
+    <form id="result-form">
+      <input type="hidden" id="match-id" />
+      <label for="reporting-player">Je suis</label>
+      <select id="reporting-player" required></select>
+
+      <label for="score-player-a">Score {{playerA}}</label>
+      <input type="number" id="score-player-a" min="0" required />
+
+      <label for="score-player-b">Score {{playerB}}</label>
+      <input type="number" id="score-player-b" min="0" required />
+
+      <label for="match-code">Code de validation du match</label>
+      <input type="text" id="match-code" placeholder="Code partagé" required />
+
+      <label for="reporter-email">Votre email (pour trace)</label>
+      <input type="email" id="reporter-email" placeholder="prenom.nom@entreprise.fr" required />
+
+      <div class="highlight" id="pending-note" style="display:none;">
+        Ce match possède déjà un résultat proposé. Si les scores correspondent, il sera verrouillé automatiquement. En cas de désaccord, le statut passera en litige et l'admin devra arbitrer.
+      </div>
+
+      <div class="actions">
+        <button type="button" class="secondary" id="cancel-result">Annuler</button>
+        <button type="submit">Valider</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="manual-match-dialog">
+    <header>
+      <h3>Nouveau match</h3>
+    </header>
+    <form id="manual-match-form">
+      <label for="manual-player-a">Participant A / Équipe 1</label>
+      <select id="manual-player-a" required></select>
+
+      <label for="manual-player-b">Participant B / Équipe 2</label>
+      <select id="manual-player-b" required></select>
+
+      <label for="manual-date">Date et heure</label>
+      <input type="datetime-local" id="manual-date" />
+
+      <label for="manual-location">Lieu</label>
+      <input type="text" id="manual-location" />
+
+      <div class="actions">
+        <button type="button" class="secondary" id="cancel-manual-match">Annuler</button>
+        <button type="submit">Créer</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="admin-dialog">
+    <header>
+      <h3>Action administrateur</h3>
+    </header>
+    <form id="admin-form">
+      <input type="hidden" id="admin-match-id" />
+      <p id="admin-action-description"></p>
+      <label for="admin-code">Code admin</label>
+      <input type="password" id="admin-code" required />
+      <div class="actions">
+        <button type="button" class="secondary" id="cancel-admin">Annuler</button>
+        <button type="submit">Confirmer</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script>
+    const STORAGE_KEY = 'pingpong-tournament';
+
+    const defaultState = {
+      settings: {
+        name: '',
+        mode: 'singles',
+        rules: '',
+        startDate: '',
+        reminderDays: 3,
+        adminPin: '',
+        location: '',
+        duration: 30,
+        roundRobin: true,
+        startDateTime: '',
+        interval: 40,
+        organizerEmail: ''
+      },
+      participants: [],
+      teams: [],
+      matches: [],
+      emailTemplate: document.getElementById('email-template').value
+    };
+
+    let state = loadState();
+
+    const elements = {
+      tournamentName: document.getElementById('tournament-name'),
+      tournamentMode: document.getElementById('tournament-mode'),
+      points: document.getElementById('points'),
+      startDate: document.getElementById('start-date'),
+      reminderDays: document.getElementById('reminder-days'),
+      adminPin: document.getElementById('admin-pin'),
+      participantInput: document.getElementById('participant-input'),
+      participantList: document.getElementById('participant-list'),
+      participantCount: document.getElementById('participant-count'),
+      addParticipants: document.getElementById('add-participants'),
+      clearParticipants: document.getElementById('clear-participants'),
+      teamSection: document.getElementById('teams-section'),
+      teamName: document.getElementById('team-name'),
+      teamMembers: document.getElementById('team-members'),
+      createTeam: document.getElementById('create-team'),
+      teamList: document.getElementById('team-list'),
+      teamCount: document.getElementById('team-count'),
+      matchLocation: document.getElementById('match-location'),
+      matchDuration: document.getElementById('match-duration'),
+      roundRobinToggle: document.getElementById('round-robin-toggle'),
+      startDateTime: document.getElementById('start-datetime'),
+      matchInterval: document.getElementById('match-interval'),
+      reminderEmail: document.getElementById('reminder-email'),
+      generateMatches: document.getElementById('generate-matches'),
+      addManualMatch: document.getElementById('add-manual-match'),
+      clearMatches: document.getElementById('clear-matches'),
+      matchesContainer: document.getElementById('matches-container'),
+      saveSettings: document.getElementById('save-settings'),
+      exportConfig: document.getElementById('export-config'),
+      importConfig: document.getElementById('import-config'),
+      importInput: document.getElementById('import-input'),
+      emailTemplate: document.getElementById('email-template'),
+      previewEmail: document.getElementById('preview-email'),
+      emailPreview: document.getElementById('email-preview'),
+      exportCsv: document.getElementById('export-csv')
+    };
+
+    const resultDialog = document.getElementById('result-dialog');
+    const resultForm = document.getElementById('result-form');
+    const manualMatchDialog = document.getElementById('manual-match-dialog');
+    const manualMatchForm = document.getElementById('manual-match-form');
+    const adminDialog = document.getElementById('admin-dialog');
+    const adminForm = document.getElementById('admin-form');
+
+    init();
+
+    function init() {
+      restoreUI();
+      bindEvents();
+      renderParticipants();
+      renderTeams();
+      renderMatches();
+      updateEmailPreview();
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return structuredClone(defaultState);
+        const parsed = JSON.parse(raw);
+        return Object.assign(structuredClone(defaultState), parsed);
+      } catch (error) {
+        console.error('Erreur de chargement', error);
+        return structuredClone(defaultState);
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function restoreUI() {
+      const { settings } = state;
+      elements.tournamentName.value = settings.name;
+      elements.tournamentMode.value = settings.mode;
+      elements.points.value = settings.rules;
+      elements.startDate.value = settings.startDate;
+      elements.reminderDays.value = settings.reminderDays;
+      elements.adminPin.value = settings.adminPin;
+      elements.matchLocation.value = settings.location;
+      elements.matchDuration.value = settings.duration;
+      elements.roundRobinToggle.checked = settings.roundRobin;
+      elements.startDateTime.value = settings.startDateTime;
+      elements.matchInterval.value = settings.interval;
+      elements.reminderEmail.value = settings.organizerEmail;
+      elements.emailTemplate.value = state.emailTemplate || defaultState.emailTemplate;
+      toggleTeamSection(settings.mode === 'doubles');
+    }
+
+    function bindEvents() {
+      elements.saveSettings.addEventListener('click', () => {
+        state.settings = {
+          name: elements.tournamentName.value.trim(),
+          mode: elements.tournamentMode.value,
+          rules: elements.points.value.trim(),
+          startDate: elements.startDate.value,
+          reminderDays: Number(elements.reminderDays.value) || 0,
+          adminPin: elements.adminPin.value.trim(),
+          location: elements.matchLocation.value.trim(),
+          duration: Number(elements.matchDuration.value) || 30,
+          roundRobin: elements.roundRobinToggle.checked,
+          startDateTime: elements.startDateTime.value,
+          interval: Number(elements.matchInterval.value) || 40,
+          organizerEmail: elements.reminderEmail.value.trim()
+        };
+        state.emailTemplate = elements.emailTemplate.value;
+        saveState();
+        toast('Paramètres sauvegardés ✅');
+      });
+
+      elements.tournamentMode.addEventListener('change', (ev) => {
+        const isDouble = ev.target.value === 'doubles';
+        toggleTeamSection(isDouble);
+        if (isDouble) {
+          state.matches = [];
+          renderMatches();
+        }
+        saveSettings(false);
+      });
+
+      elements.addParticipants.addEventListener('click', handleAddParticipants);
+      elements.clearParticipants.addEventListener('click', () => {
+        if (confirm('Supprimer tous les participants ?')) {
+          state.participants = [];
+          state.teams = [];
+          state.matches = [];
+          renderParticipants();
+          renderTeams();
+          renderMatches();
+          saveState();
+        }
+      });
+
+      elements.createTeam.addEventListener('click', handleCreateTeam);
+
+      elements.generateMatches.addEventListener('click', generateMatches);
+      elements.addManualMatch.addEventListener('click', () => openManualMatchDialog());
+      elements.clearMatches.addEventListener('click', () => {
+        if (confirm('Supprimer tous les matchs ?')) {
+          state.matches = [];
+          saveState();
+          renderMatches();
+        }
+      });
+
+      elements.exportConfig.addEventListener('click', exportConfig);
+      elements.importConfig.addEventListener('click', () => elements.importInput.click());
+      elements.importInput.addEventListener('change', importConfig);
+
+      elements.emailTemplate.addEventListener('input', () => {
+        state.emailTemplate = elements.emailTemplate.value;
+        updateEmailPreview();
+        saveState();
+      });
+
+      elements.previewEmail.addEventListener('click', updateEmailPreview);
+      elements.exportCsv.addEventListener('click', exportCsv);
+
+      resultForm.addEventListener('submit', handleResultSubmit);
+      document.getElementById('cancel-result').addEventListener('click', () => resultDialog.close());
+
+      manualMatchForm.addEventListener('submit', handleManualMatchSubmit);
+      document.getElementById('cancel-manual-match').addEventListener('click', () => manualMatchDialog.close());
+
+      adminForm.addEventListener('submit', handleAdminAction);
+      document.getElementById('cancel-admin').addEventListener('click', () => adminDialog.close());
+    }
+
+    function saveSettings(persist = true) {
+      state.settings.mode = elements.tournamentMode.value;
+      toggleTeamSection(state.settings.mode === 'doubles');
+      if (persist) saveState();
+    }
+
+    function toggleTeamSection(show) {
+      elements.teamSection.style.display = show ? 'block' : 'none';
+    }
+
+    function handleAddParticipants() {
+      const raw = elements.participantInput.value.trim();
+      if (!raw) return;
+      const names = [...new Set(raw.split(/\n|,/).map(n => n.trim()).filter(Boolean))];
+      const existing = new Set(state.participants.map(p => p.name));
+      const added = [];
+      names.forEach(name => {
+        if (!existing.has(name)) {
+          const participant = { id: crypto.randomUUID(), name };
+          state.participants.push(participant);
+          added.push(name);
+        }
+      });
+      if (added.length === 0) {
+        toast('Aucun nouveau participant ajouté');
+      } else {
+        toast(`${added.length} participant(s) ajouté(s)`);
+      }
+      elements.participantInput.value = '';
+      refreshTeamMembers();
+      renderParticipants();
+      saveState();
+    }
+
+    function renderParticipants() {
+      const list = state.participants
+        .slice()
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+      elements.participantList.innerHTML = '';
+      list.forEach(p => {
+        const li = document.createElement('li');
+        const name = document.createElement('span');
+        name.textContent = p.name;
+        const remove = document.createElement('button');
+        remove.textContent = '❌';
+        remove.className = 'secondary';
+        remove.addEventListener('click', () => removeParticipant(p.id));
+        li.append(name, remove);
+        elements.participantList.appendChild(li);
+      });
+
+      elements.participantCount.textContent = `${list.length} inscrit${list.length > 1 ? 's' : ''}`;
+      refreshTeamMembers();
+    }
+
+    function removeParticipant(id) {
+      if (!confirm('Retirer ce participant ?')) return;
+      state.participants = state.participants.filter(p => p.id !== id);
+      state.teams = state.teams.filter(team => team.members.every(memberId => memberId !== id));
+      state.matches = state.matches.filter(match => match.playerA.id !== id && match.playerB.id !== id);
+      renderParticipants();
+      renderTeams();
+      renderMatches();
+      saveState();
+    }
+
+    function handleCreateTeam() {
+      const name = elements.teamName.value.trim();
+      const members = Array.from(elements.teamMembers.selectedOptions).map(opt => opt.value);
+
+      if (!name) {
+        toast('Donnez un nom à l\'équipe');
+        return;
+      }
+
+      if (members.length !== 2) {
+        toast('Une équipe de double nécessite exactement 2 membres');
+        return;
+      }
+
+      const isTaken = state.teams.some(team => team.members.some(m => members.includes(m)));
+      if (isTaken) {
+        toast('Un participant ne peut appartenir qu\'à une seule équipe');
+        return;
+      }
+
+      state.teams.push({ id: crypto.randomUUID(), name, members });
+      elements.teamName.value = '';
+      renderTeams();
+      saveState();
+    }
+
+    function renderTeams() {
+      if (state.settings.mode !== 'doubles') return;
+      elements.teamList.innerHTML = '';
+      state.teams.forEach(team => {
+        const li = document.createElement('li');
+        const info = document.createElement('div');
+        info.innerHTML = `<strong>${team.name}</strong><div class="pill-group">${team.members.map(id => `<span>${findParticipant(id)?.name || 'Inconnu'}</span>`).join('')}</div>`;
+        const btn = document.createElement('button');
+        btn.textContent = '❌';
+        btn.className = 'secondary';
+        btn.addEventListener('click', () => removeTeam(team.id));
+        li.append(info, btn);
+        elements.teamList.appendChild(li);
+      });
+      elements.teamCount.textContent = `${state.teams.length} équipe${state.teams.length > 1 ? 's' : ''}`;
+      refreshTeamMembers();
+    }
+
+    function removeTeam(id) {
+      if (!confirm('Supprimer cette équipe ?')) return;
+      state.teams = state.teams.filter(team => team.id !== id);
+      state.matches = state.matches.filter(match => match.playerA.id !== id && match.playerB.id !== id);
+      renderTeams();
+      renderMatches();
+      saveState();
+    }
+
+    function refreshTeamMembers() {
+      if (state.settings.mode !== 'doubles') return;
+      const available = state.participants.filter(p => !state.teams.some(team => team.members.includes(p.id)));
+      elements.teamMembers.innerHTML = available.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+    }
+
+    function generateMatches() {
+      if (state.settings.mode === 'doubles') {
+        if (state.teams.length < 2) {
+          toast('Créez au moins deux équipes');
+          return;
+        }
+        const combos = combinations(state.teams.map(team => ({ id: team.id, name: team.name })), 2);
+        buildMatchesFromPairs(combos);
+      } else {
+        if (state.participants.length < 2) {
+          toast('Ajoutez au moins deux participants');
+          return;
+        }
+        const combos = combinations(state.participants.map(p => ({ id: p.id, name: p.name })), 2);
+        buildMatchesFromPairs(combos);
+      }
+    }
+
+    function buildMatchesFromPairs(pairs) {
+      const settings = state.settings;
+      const matches = [];
+      const start = settings.startDateTime ? new Date(settings.startDateTime) : null;
+      const intervalMs = settings.interval * 60 * 1000;
+      let currentDate = start ? new Date(start) : null;
+
+      pairs.forEach((pair, index) => {
+        const [playerA, playerB] = pair;
+        matches.push({
+          id: crypto.randomUUID(),
+          playerA,
+          playerB,
+          scheduledAt: currentDate ? currentDate.toISOString() : '',
+          location: settings.location,
+          duration: settings.duration,
+          status: 'planifie',
+          code: generateCode(),
+          reports: [],
+          locked: false,
+          winner: null
+        });
+
+        if (currentDate) {
+          currentDate = new Date(currentDate.getTime() + intervalMs);
+        }
+      });
+
+      state.matches = matches;
+      saveState();
+      renderMatches();
+      toast(`${matches.length} match(s) généré(s)`);
+    }
+
+    function openResultDialog(matchId) {
+      const match = state.matches.find(m => m.id === matchId);
+      if (!match) return;
+
+      resultDialog.querySelector('header h3').textContent = `Reporter un résultat — ${match.playerA.name} vs ${match.playerB.name}`;
+      document.getElementById('match-id').value = match.id;
+      document.getElementById('score-player-a').value = '';
+      document.getElementById('score-player-b').value = '';
+      document.getElementById('reporter-email').value = '';
+      document.getElementById('match-code').value = '';
+
+      const playerSelect = document.getElementById('reporting-player');
+      playerSelect.innerHTML = '';
+      [match.playerA, match.playerB].forEach(player => {
+        const option = document.createElement('option');
+        option.value = player.id;
+        option.textContent = player.name;
+        playerSelect.appendChild(option);
+      });
+
+      const pendingNote = document.getElementById('pending-note');
+      pendingNote.style.display = match.reports.length > 0 ? 'block' : 'none';
+
+      resultDialog.showModal();
+    }
+
+    function handleResultSubmit(event) {
+      event.preventDefault();
+      const form = event.target;
+      const matchId = form.querySelector('#match-id').value;
+      const match = state.matches.find(m => m.id === matchId);
+      if (!match) return;
+      if (match.locked) {
+        toast('Match verrouillé. Contactez l\'administrateur.');
+        resultDialog.close();
+        return;
+      }
+
+      const reportingPlayer = form.querySelector('#reporting-player').value;
+      const scoreA = Number(form.querySelector('#score-player-a').value);
+      const scoreB = Number(form.querySelector('#score-player-b').value);
+      const code = form.querySelector('#match-code').value.trim();
+      const email = form.querySelector('#reporter-email').value.trim();
+
+      if (code !== match.code) {
+        toast('Code de validation incorrect');
+        return;
+      }
+
+      const report = {
+        by: reportingPlayer,
+        scoreA,
+        scoreB,
+        email,
+        timestamp: new Date().toISOString()
+      };
+
+      match.reports.push(report);
+
+      if (match.reports.length === 1) {
+        match.status = 'en-attente';
+        toast('Résultat enregistré. En attente de confirmation du second joueur.');
+      } else {
+        const [first, second] = match.reports.slice(-2);
+        if (first.scoreA === second.scoreA && first.scoreB === second.scoreB) {
+          match.status = 'verrouille';
+          match.locked = true;
+          match.winner = first.scoreA === first.scoreB ? 'Égalité' : (first.scoreA > first.scoreB ? match.playerA.name : match.playerB.name);
+          toast('Match verrouillé ✅');
+        } else {
+          match.status = 'litige';
+          match.locked = false;
+          toast('Scores différents : litige signalé à l\'administrateur');
+        }
+      }
+
+      saveState();
+      renderMatches();
+      resultDialog.close();
+    }
+
+    function renderMatches() {
+      const container = elements.matchesContainer;
+      container.innerHTML = '';
+      if (!state.matches.length) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <h3>Pas encore de matchs</h3>
+            <p>Générez la poule automatiquement ou ajoutez des matchs manuellement.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const table = document.createElement('table');
+      table.innerHTML = `
+        <thead>
+          <tr>
+            <th>Match</th>
+            <th>Date</th>
+            <th>Lieu</th>
+            <th>Durée</th>
+            <th>Statut</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+      `;
+
+      const tbody = document.createElement('tbody');
+      state.matches.forEach(match => {
+        const tr = document.createElement('tr');
+        const date = match.scheduledAt ? formatDate(match.scheduledAt) : 'À planifier';
+        const statusLabel = translateStatus(match.status);
+        tr.innerHTML = `
+          <td><strong>${match.playerA.name}</strong> vs <strong>${match.playerB.name}</strong><div class="small">Code : <span class="code">${match.code}</span></div>${match.winner ? `<div class="small">Vainqueur : <strong>${match.winner}</strong></div>` : ''}</td>
+          <td>${date}</td>
+          <td>${match.location || state.settings.location || 'À définir'}</td>
+          <td>${match.duration ? match.duration + ' min' : '-'}</td>
+          <td><span class="status-pill" data-status="${match.status}">${statusLabel}</span></td>
+          <td></td>
+        `;
+        const actionCell = tr.querySelector('td:last-child');
+
+        const reportBtn = document.createElement('button');
+        reportBtn.textContent = 'Reporter';
+        reportBtn.addEventListener('click', () => openResultDialog(match.id));
+
+        const lockBtn = document.createElement('button');
+        lockBtn.className = 'secondary';
+        lockBtn.style.marginLeft = '8px';
+        lockBtn.textContent = match.locked ? '🔓 Déverrouiller' : '🔒 Verrouiller';
+        lockBtn.addEventListener('click', () => requestAdminAction(match.id, match.locked ? 'unlock' : 'lock'));
+
+        const editBtn = document.createElement('button');
+        editBtn.className = 'secondary';
+        editBtn.style.marginLeft = '8px';
+        editBtn.textContent = '✏️ Modifier';
+        editBtn.addEventListener('click', () => requestAdminAction(match.id, 'edit'));
+
+        actionCell.append(reportBtn, lockBtn, editBtn);
+        tbody.appendChild(tr);
+      });
+
+      table.appendChild(tbody);
+      container.appendChild(table);
+    }
+
+    function requestAdminAction(matchId, action) {
+      if (!state.settings.adminPin) {
+        toast('Définissez un code admin dans les paramètres');
+        return;
+      }
+      adminDialog.querySelector('header h3').textContent = action === 'lock' ? 'Verrouiller le match' : action === 'unlock' ? 'Déverrouiller le match' : 'Modifier le score';
+      document.getElementById('admin-match-id').value = matchId;
+      adminDialog.dataset.action = action;
+      document.getElementById('admin-code').value = '';
+      document.getElementById('admin-action-description').textContent =
+        action === 'lock' ?
+        'Validez le score actuel et verrouillez ce match. Plus aucune modification possible sans action admin.' :
+        action === 'unlock' ?
+        'Ré-ouvrez ce match pour permettre une nouvelle saisie de résultat.' :
+        'Corrigez le score manuellement. Après validation, le match sera verrouillé.';
+      adminDialog.showModal();
+    }
+
+    function handleAdminAction(event) {
+      event.preventDefault();
+      const action = adminDialog.dataset.action;
+      const matchId = document.getElementById('admin-match-id').value;
+      const code = document.getElementById('admin-code').value.trim();
+
+      if (code !== state.settings.adminPin) {
+        toast('Code admin incorrect');
+        return;
+      }
+
+      const match = state.matches.find(m => m.id === matchId);
+      if (!match) return;
+
+      if (action === 'lock') {
+        match.locked = true;
+        match.status = 'verrouille';
+        match.winner = determineWinner(match);
+      } else if (action === 'unlock') {
+        match.locked = false;
+        match.status = 'planifie';
+        match.winner = null;
+        match.reports = [];
+      } else if (action === 'edit') {
+        const scoreA = prompt(`Score pour ${match.playerA.name}`, match.reports.at(-1)?.scoreA ?? '0');
+        const scoreB = prompt(`Score pour ${match.playerB.name}`, match.reports.at(-1)?.scoreB ?? '0');
+        if (scoreA === null || scoreB === null) {
+          adminDialog.close();
+          return;
+        }
+        match.reports.push({
+          by: 'admin',
+          scoreA: Number(scoreA),
+          scoreB: Number(scoreB),
+          email: 'admin',
+          timestamp: new Date().toISOString()
+        });
+        match.locked = true;
+        match.status = 'verrouille';
+        match.winner = determineWinner(match);
+      }
+
+      saveState();
+      renderMatches();
+      adminDialog.close();
+      toast('Action admin effectuée');
+    }
+
+    function determineWinner(match) {
+      const last = match.reports.at(-1);
+      if (!last) return null;
+      if (last.scoreA === last.scoreB) return 'Égalité';
+      return last.scoreA > last.scoreB ? match.playerA.name : match.playerB.name;
+    }
+
+    function openManualMatchDialog() {
+      const options = state.settings.mode === 'doubles' ? state.teams : state.participants;
+      if (options.length < 2) {
+        toast('Ajoutez suffisamment de participants/équipes');
+        return;
+      }
+
+      const selectA = document.getElementById('manual-player-a');
+      const selectB = document.getElementById('manual-player-b');
+      selectA.innerHTML = '';
+      selectB.innerHTML = '';
+
+      options.forEach(option => {
+        const optA = document.createElement('option');
+        optA.value = option.id;
+        optA.textContent = option.name;
+        selectA.appendChild(optA);
+        const optB = optA.cloneNode(true);
+        selectB.appendChild(optB);
+      });
+
+      document.getElementById('manual-date').value = state.settings.startDateTime;
+      document.getElementById('manual-location').value = state.settings.location;
+
+      manualMatchDialog.showModal();
+    }
+
+    function handleManualMatchSubmit(event) {
+      event.preventDefault();
+      const form = event.target;
+      const playerAId = form.querySelector('#manual-player-a').value;
+      const playerBId = form.querySelector('#manual-player-b').value;
+      if (playerAId === playerBId) {
+        toast('Choisissez deux joueurs/équipes distincts');
+        return;
+      }
+
+      const lookup = state.settings.mode === 'doubles' ? id => state.teams.find(team => team.id === id) : id => state.participants.find(p => p.id === id);
+
+      const match = {
+        id: crypto.randomUUID(),
+        playerA: mapEntity(lookup(playerAId)),
+        playerB: mapEntity(lookup(playerBId)),
+        scheduledAt: form.querySelector('#manual-date').value || '',
+        location: form.querySelector('#manual-location').value || state.settings.location,
+        duration: state.settings.duration,
+        status: 'planifie',
+        code: generateCode(),
+        reports: [],
+        locked: false,
+        winner: null
+      };
+
+      state.matches.push(match);
+      saveState();
+      renderMatches();
+      manualMatchDialog.close();
+      toast('Match ajouté');
+    }
+
+    function mapEntity(entity) {
+      if (!entity) return { id: '', name: 'Inconnu' };
+      if (entity.members) {
+        return { id: entity.id, name: `${entity.name} (${entity.members.map(id => findParticipant(id)?.name).join(' & ')})` };
+      }
+      return { id: entity.id, name: entity.name };
+    }
+
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      if (isNaN(date)) return 'À planifier';
+      return date.toLocaleString('fr-FR', { dateStyle: 'medium', timeStyle: 'short' });
+    }
+
+    function translateStatus(status) {
+      return {
+        'planifie': 'Planifié',
+        'en-attente': 'En attente',
+        'verrouille': 'Verrouillé',
+        'litige': 'Litige'
+      }[status] || status;
+    }
+
+    function combinations(arr, size) {
+      const result = [];
+      for (let i = 0; i < arr.length; i++) {
+        for (let j = i + 1; j < arr.length; j++) {
+          result.push([arr[i], arr[j]]);
+        }
+      }
+      return result;
+    }
+
+    function generateCode() {
+      return Math.random().toString(36).slice(-5).toUpperCase();
+    }
+
+    function findParticipant(id) {
+      return state.participants.find(p => p.id === id);
+    }
+
+    function toast(message) {
+      const div = document.createElement('div');
+      div.textContent = message;
+      div.style.position = 'fixed';
+      div.style.bottom = '24px';
+      div.style.right = '24px';
+      div.style.background = '#0f172a';
+      div.style.color = 'white';
+      div.style.padding = '14px 20px';
+      div.style.borderRadius = '12px';
+      div.style.boxShadow = '0 16px 40px rgba(15, 23, 42, 0.35)';
+      div.style.zIndex = '9999';
+      document.body.appendChild(div);
+      setTimeout(() => {
+        div.style.opacity = '0';
+        div.style.transition = 'opacity 0.4s ease';
+        setTimeout(() => div.remove(), 400);
+      }, 2200);
+    }
+
+    function exportConfig() {
+      const dataStr = JSON.stringify(state, null, 2);
+      const blob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${(state.settings.name || 'tournoi-ping-pong').replace(/\s+/g, '-').toLowerCase()}-config.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importConfig(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = JSON.parse(e.target.result);
+          state = Object.assign(structuredClone(defaultState), data);
+          saveState();
+          restoreUI();
+          renderParticipants();
+          renderTeams();
+          renderMatches();
+          toast('Configuration importée ✅');
+        } catch (error) {
+          toast('Fichier invalide');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function updateEmailPreview() {
+      if (!state.matches.length) {
+        elements.emailPreview.style.display = 'none';
+        return;
+      }
+      const sample = state.matches[0];
+      const date = sample.scheduledAt ? new Date(sample.scheduledAt) : new Date();
+      const formattedDate = date.toLocaleDateString('fr-FR', { dateStyle: 'full' });
+      const formattedTime = date.toLocaleTimeString('fr-FR', { timeStyle: 'short' });
+      const replacements = {
+        '{{playerA}}': sample.playerA.name,
+        '{{playerB}}': sample.playerB.name,
+        '{{date}}': formattedDate,
+        '{{time}}': formattedTime,
+        '{{location}}': sample.location || state.settings.location || 'À définir',
+        '{{rules}}': state.settings.rules || 'Selon règlement communiqué',
+        '{{code}}': sample.code,
+        '{{organizer}}': state.settings.organizerEmail || 'Organisateur'
+      };
+      let preview = state.emailTemplate;
+      Object.entries(replacements).forEach(([token, value]) => {
+        preview = preview.replaceAll(token, value);
+      });
+      elements.emailPreview.textContent = preview;
+      elements.emailPreview.style.display = 'block';
+    }
+
+    function exportCsv() {
+      if (!state.matches.length) {
+        toast('Aucun match à exporter');
+        return;
+      }
+      const header = ['Match', 'Date', 'Lieu', 'Durée', 'Code', 'Statut'];
+      const rows = state.matches.map(match => [
+        `${match.playerA.name} vs ${match.playerB.name}`,
+        match.scheduledAt ? new Date(match.scheduledAt).toISOString() : '',
+        match.location || state.settings.location || '',
+        match.duration || '',
+        match.code,
+        match.status
+      ]);
+      const csv = [header, ...rows].map(row => row.map(field => `"${String(field).replace(/"/g, '""')}"`).join(';')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'planning-ping-pong.csv';
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+  </script>
+</body>
+</html>
